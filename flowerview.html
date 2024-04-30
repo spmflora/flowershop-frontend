@@ -6,6 +6,7 @@
     <title>Flowershop Index</title>
     <link rel="stylesheet" href="navbar.css">
     <link rel="stylesheet" href="flowerview.css">
+    <script src="configuration.js"></script> 
   </head>
 
   <body>
@@ -19,9 +20,64 @@
         <li class="text"><h3>Send Flowers they will love!</h3></li>
         <li class="imageRight"><img src="flowertitlecard.webp"/></li>
     </ul>
-    
-    <ul class="filters">
-        
-    </ul>
+    <select id="Occasion">
+        <option value="0">Occasion</option>
+        <option value="1">Mother's Day</option>
+        <option value="2">Birthday</option>
+        <option value="3">Thank You</option>
+    </select>
+    <select id="Color">
+        <option value="0">Color</option>
+        <option value="1">Mixed</option>
+        <option value="2">Yellow</option>
+        <option value="3">Green</option>
+        <option value="4">Orange</option>
+    </select>
+    <select id="SortBy">
+        <option value="0">Sort Price</option>
+        <option value="1">Low to High</option>
+        <option value="2">High to Low</option>
+    </select>
+    <div class="flowers">
+        <div id="list" class="cards"></div>
+    </div>
+    <script>
+        let host = getHost();
+        let flowers = [];
+        let list = document.getElementById("list");
+
+        displayTheFlowers();
+
+        async function getAll(){
+            let response = await fetch(host + "/flowers");
+            let result = await response.json();
+            return result;
+        }
+
+        async function displayTheFlowers(){
+            if(flowers.length ==0){
+                flowers = await getAll();
+            }
+            list.innerHTML = "";
+            for(let flower of flowers){
+                let div = document.createElement("div");
+                div.id = `${flower.id}`
+                div.onclick = function () {
+                    
+                };
+                div.className = "card";
+                let innerHtml = `
+                <img src="${host}/flowers/${flower.id}/image" alt "flowerpicture" style="width:100%">
+                <div class="container">
+                    <h4><b>${flower.name}</b></h4>
+                    <p>${flower.cost}</p>
+                </div>
+
+                `;
+                div.innerHTML = innerHtml;
+                list.appendChild(div);
+            }
+        }
+    </script>
   </body>
 </html>
