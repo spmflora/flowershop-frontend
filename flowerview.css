@@ -1,0 +1,23 @@
+ul.titlecard li.imageRight{
+    float: right;
+}
+ul.titlecard li.imageRight img{
+    width: 200px;
+}
+ul.titlecard{
+    background-color: palegreen;
+    list-style-type: none;
+    overflow: hidden;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+ul.titlecard li{
+    float: left;
+    display: block;
+    color: black;
+    padding: 14px 16px;
+    text-decoration: none;
+}
