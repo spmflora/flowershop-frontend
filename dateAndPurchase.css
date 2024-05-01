@@ -1,0 +1,16 @@
+.orderview{
+    background-color: palegreen;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.orderview div{
+    padding: 14px 16px;
+}
+.orderview div.product-detail{
+}
+
+.orderview div.pay-and-date{
+    
+}

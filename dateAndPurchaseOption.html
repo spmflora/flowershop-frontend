@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flowershop Index</title>
+    <link rel="stylesheet" href="navbar.css">
+    <link rel="stylesheet" href="dateAndPurchase.css">
+    <script src="configuration.js"></script> 
+  </head>
+
+  <body>
+    <ul class="topnav">
+      <li></li>
+      <li><a class="active" href="index.html">Home Page</a></li>
+      <li><a class="active" href="flowerview.html">Pick Your Bouquet</a></li>
+      <li class="right"><a class="active" href="login.html">Login</a></li>
+    </ul>
+
+    <div class="orderview">
+      <div class="product-detail" id="pictureHolder">
+      </div>
+      <div class="pay-and-date">
+        <div class="flowerName" id="fN">
+
+        </div>
+        <div class="deliveryTime" id="dT">
+          <label for="start">Select Delivery Date</label>
+          <input type="date" id="start" name="trip-start" value="2024-05-05" min="2024-5-05" max="2025-12-31" />
+        </div>
+        <div class="pricing" id="price">
+        </div>
+      </div>
+    </div>
+    <button onclick="saveAndContinue()">Proceed To Checkout</button>
+    <script>
+      let flowerString = localStorage.getItem('SelectedBoquet');
+      let flower = JSON.parse(flowerString);
+      let host = getHost();
+
+      displayTheFlower();
+      displayTheTitle();
+      displayThePrice();
+
+      async function displayTheFlower(){
+        let div = document.createElement("div");
+        let container = document.getElementById("pictureHolder");
+        container.innerHTML="";
+        let innerHtml = `
+        <img src="${host}/flowers/${flower.id}/image" alt "flowerpicture" style="width:100%">
+        `
+        div.innerHTML = innerHtml;
+        container.appendChild(div);
+      }
+
+      async function displayTheTitle(){
+        let div = document.createElement("div");
+        let container = document.getElementById("fN");
+        container.innerHTML="";
+        let innerHtml = `
+        <h3>${flower.name}</h3>
+        `
+        div.innerHTML = innerHtml;
+        container.appendChild(div);
+      }
+
+      async function displayThePrice(){
+        let div = document.createElement("div");
+        let container = document.getElementById("price");
+        container.innerHTML="";
+        let innerHtml = `
+          <form>
+            <label>Options For Payment:</label><br />
+            <input type="radio" id="optionA" name="answer" value="A" required />
+            <label for="optionA">ONE TIME ORDER :  <b>${flower.cost}</b> </label>
+            <br />
+            <input type="radio" id="optionB" name="answer" value="B" required />
+            <label for="optionB">Subscription <b>${flower.cost - 10} / Month</b></label>
+            <br />
+          </form>
+        `
+        div.innerHTML = innerHtml;
+        container.appendChild(div);
+      }
+    </script>
+  </body>
+</html>
