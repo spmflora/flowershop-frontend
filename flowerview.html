@@ -6,6 +6,7 @@
     <title>Flowershop Index</title>
     <link rel="stylesheet" href="navbar.css">
     <link rel="stylesheet" href="flowerview.css">
+    <link rel="stylesheet" href="cards.css">
     <script src="configuration.js"></script> 
   </head>
 
@@ -21,23 +22,25 @@
         <li class="imageRight"><img src="flowertitlecard.webp"/></li>
     </ul>
     <select id="Occasion">
-        <option value="0">Occasion</option>
+        <option value="0" selected>Occasion</option>
         <option value="1">Mother's Day</option>
         <option value="2">Birthday</option>
         <option value="3">Thank You</option>
     </select>
     <select id="Color">
-        <option value="0">Color</option>
+        <option value="0" selected>Color</option>
         <option value="1">Mixed</option>
         <option value="2">Yellow</option>
         <option value="3">Green</option>
         <option value="4">Orange</option>
+        <option value="5">Red</option>
     </select>
     <select id="SortBy">
-        <option value="0">Sort Price</option>
+        <option value="0" selected>Sort Price</option>
         <option value="1">Low to High</option>
         <option value="2">High to Low</option>
     </select>
+    <button onclick="sortBy()">Process Sort</button>
     <div class="flowers">
         <div id="list" class="cards"></div>
     </div>
@@ -46,7 +49,7 @@
         let flowers = [];
         let list = document.getElementById("list");
 
-        displayTheFlowers();
+        displayTheFlowers(flowers);
 
         async function getAll(){
             let response = await fetch(host + "/flowers");
@@ -54,7 +57,7 @@
             return result;
         }
 
-        async function displayTheFlowers(){
+        async function displayTheFlowers(flowers){
             if(flowers.length ==0){
                 flowers = await getAll();
             }
@@ -72,11 +75,129 @@
                     <h4><b>${flower.name}</b></h4>
                     <p>${flower.cost}</p>
                 </div>
-
                 `;
                 div.innerHTML = innerHtml;
                 list.appendChild(div);
             }
+        }
+
+        async function sortBy(){
+            let selectedOccasion = document.getElementById("Occasion").value;
+            let selectedColor = document.getElementById("Color").value;
+            let selectedPrice = document.getElementById("SortBy").value;
+            let result = [];
+            result = await getAll();
+            let temp = [];
+
+            switch(selectedOccasion){
+                case "0":
+                    ///Do nothing, no sort to be had here
+                    break;
+                case "1": 
+                    ///Mother's Day
+                    for(let flower of result){
+                        if(flower.category.includes("Mother's Day")){
+                            temp.push(flower);
+                        }
+                    }
+                    result = temp;
+                    break;
+                case "2": 
+                    ///Birthday
+                    for(let flower of result){
+                        if(flower.category.includes("Birthday")){
+                            temp.push(flower);
+                        }
+                    }
+                    result = temp;
+                    break;
+                case "3":
+                    ///Thank You
+                    for(let flower of result){
+                        if(flower.category.includes("Thank You")){
+                            temp.push(flower);
+                        }
+                    }
+                    result = temp;
+                    break;
+            }
+
+            temp = [];
+            switch(selectedColor){
+                case "0":
+                    ///Do nothing, no sort to be had here
+                    break;
+                case "1": 
+                    ///Mixed
+                    for(let flower of result){
+                        if(flower.color.includes("mixed")){
+                            temp.push(flower);
+                        }
+                    }
+                    result = temp;
+                    break;
+                case "2": 
+                    ///Yellow
+                    for(let flower of result){
+                        if(flower.color.includes("yellow")){
+                            temp.push(flower);
+                        }
+                    }
+                    result = temp;
+                    break;
+                case "3":
+                    ///Green
+                    for(let flower of result){
+                        if(flower.color.includes("green")){
+                            temp.push(flower);
+                        }
+                    }
+                    result = temp;
+                    break;
+                case "4":
+                    ///Orange
+                    for(let flower of result){
+                        if(flower.color.includes("orange")){
+                            temp.push(flower);
+                        }
+                    }
+                    result = temp;
+                    break;
+                case "5":
+                    ///Red
+                    for(let flower of result.includes("red")){
+                        if(flower.color){
+                            temp.push(flower);
+                        }
+                    }
+                    result = temp;
+                    break;
+            }
+            
+            if(selectedPrice == "1"){
+                for(let i = 0; i < result.length; i++){
+                    for(let j = 0; j <(result.length - i -1); j++){
+                        if(result[j] > result[j+1]){
+                            let t = result[j];
+                            result[j] = result[j+1];
+                            result[j+1] = t;
+                        }
+                    }
+                }
+            }
+            if(selectedPrice == "2"){
+                for(let i = 0; i < result.length; i++){
+                    for(let j = 0; j <(result.length - i -1); j++){
+                        if(result[j] < result[j+1]){
+                            let t = result[j];
+                            result[j] = result[j+1];
+                            result[j+1] = t;
+                        }
+                    }
+                }
+            }
+
+            displayTheFlowers(result);
         }
     </script>
   </body>
