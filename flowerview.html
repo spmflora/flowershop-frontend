@@ -174,10 +174,11 @@
                     break;
             }
             
+            console.log(result[0])
             if(selectedPrice == "1"){
                 for(let i = 0; i < result.length; i++){
                     for(let j = 0; j <(result.length - i -1); j++){
-                        if(result[j] > result[j+1]){
+                        if(result[j].cost > result[j+1].cost){
                             let t = result[j];
                             result[j] = result[j+1];
                             result[j+1] = t;
@@ -188,7 +189,7 @@
             if(selectedPrice == "2"){
                 for(let i = 0; i < result.length; i++){
                     for(let j = 0; j <(result.length - i -1); j++){
-                        if(result[j] < result[j+1]){
+                        if(result[j].cost < result[j+1].cost){
                             let t = result[j];
                             result[j] = result[j+1];
                             result[j+1] = t;
