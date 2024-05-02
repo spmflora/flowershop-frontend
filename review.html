@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Order Review</title>
+    <link rel="stylesheet" href="navbar.css">
+    <script src="configuration.js"></script> 
+    <link rel="stylesheet" href="review.css">
+  </head>
+
+  <body>
+    <ul class="topnav">
+      <li></li>
+      <li><a class="active" href="index.html">Home Page</a></li>
+      <li><a class="active" href="flowerview.html">Pick Your Bouquet</a></li>
+      <li class="right"><a class="active" href="login.html">Login</a></li>
+    </ul>
+    <div class="orderReview">
+        <div class="imageLeft">
+            <img src="flowertitlecard.webp"/>
+        </div>
+        <div class="hostRight">
+            <div class="orderInfo" id="orderInfo">
+            </div>
+            <div class="PricingMenu" id="PricingMenu">
+                <p>Stuff Is Here</p>
+            </div>
+        </div>
+    </div> 
+    <div class="button-control">
+        <button onclick="sendOrder()">Confirm Order</button>
+    </div>  
+    <script>
+        let flowerString = localStorage.getItem('SelectedBoquet');
+        let flower = JSON.parse(flowerString);
+        let host = getHost();
+        let date = localStorage.getItem('OrderDate');
+        let AddStr = localStorage.getItem('DelivAdd');
+        let Name = localStorage.getItem('RName');
+        let Add = JSON.parse(AddStr);
+
+        dTheOrderInfo();
+
+        dPricingCheck();
+
+        async function dTheOrderInfo(){
+            let div = document.createElement('div');
+            let container = document.getElementById('orderInfo');
+            div.className = "orderDeco";
+            container.innerHTML = " ";
+            let innerHtml = `
+                <h3>${flower.name}</h3>
+                <h4>Requested Delivery Date</h4>
+                <p>${date}</p>
+                <h4>Item Pricing</h4>
+                <p>${flower.cost}</p>
+                <h4>Delivery Address</h4>
+                <p>${Name}</p>
+                <p>${Add.address}, ${Add.apt}</p>
+                <p>${Add.city}, ${Add.state} ${Add.zip}</p>
+            `
+            div.innerHTML = innerHtml;
+            container.appendChild(div);
+        }
+
+        async function dPricingCheck(){
+            let div = document.createElement('div');
+            div.className = "priceInfo";
+            let container = document.getElementById('PricingMenu');
+            a = flower.cost + 15.00;
+            b = flower.cost + 25.00;
+            total = flower.cost;
+            if(isLoggedIn()){
+                innerHtml = `
+                    <div class="rowofPrice">
+                        <p>SUBTOTAL</p>
+                        <p>${flower.cost}</p>
+                    </div>
+
+                    <div class="rowofPrice">
+                        <p>Delivery:</p>
+                        <p> 25.00</p>
+                    </div>
+
+                    <div class="rowofPrice">
+                        <p>Delivery Discount</p>
+                        <p> -10.00 </p>
+                    </div>
+                    
+                    <div class="rowofPrice">
+                        <h4>ORDER TOTAL:</h4>
+                        <h4>${a.toFixed(2)}</h4>
+                    </div>
+                `
+                total = a;
+            }
+            else{
+                innerHtml = `
+                    <div class="rowofPrice">
+                        <p>SUBTOTAL</p>
+                        <p>${flower.cost}</p>
+                    </div>
+
+                    <div class="rowofPrice">
+                        <p>Delivery:</p>
+                        <p> 25.00</p>
+                    </div>
+
+                    <div class="rowofPrice">
+                        <h4>ORDER TOTAL:</h4>
+                        <h4>${b.toFixed(2)}</h4>
+                    </div>
+                `
+                total = b;
+            }
+
+            div.innerHTML = innerHtml;
+
+            container.appendChild(div);
+        }
+
+        async function sendOrder(){
+            let request = {};
+            let endpoint = host + "/orders";
+            request = {
+                method : "POST",
+                headers:{
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({"flowerId": flower.id, "recipientName" : Name, "totalCost" : total})
+            }
+
+
+            let response = await fetch(endpoint, request);
+
+            if(response.status == 200){
+                alert("Order Accepted! Returning to Homepage");
+                localStorage.clear();
+                window.location.href = "flowerview.html";
+            }else{
+                alert("Something messed up. Stay here for a moment");
+            }
+        }
+    </script>
+  </body>
+</html>

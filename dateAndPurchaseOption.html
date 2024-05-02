@@ -28,8 +28,8 @@
           <label for="start">Select Delivery Date</label>
           <input type="date" id="start" name="trip-start" value="2024-05-05" min="2024-5-05" max="2025-12-31" />
         </div>
-        <div class="pricing" id="price">
-        </div>
+          <div class="pricing" id="price">
+          </div>
       </div>
     </div>
     <button onclick="saveAndContinue()">Proceed To Checkout</button>
@@ -69,18 +69,31 @@
         let container = document.getElementById("price");
         container.innerHTML="";
         let innerHtml = `
-          <form>
+          <form id="priceSelector">
             <label>Options For Payment:</label><br />
-            <input type="radio" id="optionA" name="answer" value="A" required />
+            <input type="radio" id="optionA" name="answer" value="${flower.cost}" required />
             <label for="optionA">ONE TIME ORDER :  <b>${flower.cost}</b> </label>
             <br />
-            <input type="radio" id="optionB" name="answer" value="B" required />
+            <input type="radio" id="optionB" name="answer" value="${flower.cost - 10}" required />
             <label for="optionB">Subscription <b>${flower.cost - 10} / Month</b></label>
             <br />
           </form>
         `
         div.innerHTML = innerHtml;
         container.appendChild(div);
+      }
+
+      async function saveAndContinue(){
+        let date = document.getElementById("start").value;
+        let dateString = JSON.stringify(date);
+        localStorage.setItem('OrderDate', dateString);
+        let pricingFormat = document.getElementById("priceSelector").value;
+        if(!pricingFormat){
+          pricingFormat = flower.cost;
+        }
+        localStorage.setItem('Price', pricingFormat);
+        console.log(pricingFormat);
+        window.location.href="delivery.html";
       }
     </script>
   </body>

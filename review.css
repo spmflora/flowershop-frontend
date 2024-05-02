@@ -1,0 +1,57 @@
+.button-control {
+    display: flex;
+    justify-content: flex-end;
+    margin: 15px;
+}
+.orderReview {
+    display: flex;
+    flex-direction: row;
+    padding: 25px;
+    background-color: palegreen;
+}
+
+.orderDeco{
+    display: flex;
+    flex-direction: column;
+}
+
+.imageLeft{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 20px;
+    border-right: 2px solid black;
+}
+
+.hostRight{
+    flex: 5;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 25px;
+}
+
+img {
+    width: 100px;
+}
+
+.PricingMenu{
+    background-color: lightgray;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.priceInfo{
+    display:flex;
+    flex-direction: column;
+    width:95%
+}
+
+.rowofPrice{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
